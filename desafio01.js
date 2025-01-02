@@ -8,24 +8,25 @@ function csvToJson(videos) {
   const videosArr = [];
   videos.forEach((video) => {
     let [id, title, duration] = video.split(',');
-    title = title.split('.')[0]
+    title = title.split('.')[0];
     title = title.slice(6);
     const parsedVideo = new Video([id, title, duration]);
     videosArr.push(parsedVideo);
   });
 
-  let resString = '[\n';
+  let res = '[\n';
   videosArr.forEach((video) => {
-    resString = resString + '\n\t{\n' + Object.entries(video).map(([key, value]) => {
-      return `\t\t"${key}": ${typeof value === 'string' ? '"' + value + '"' : value}`
+    res = res + '\n\t{\n' + Object.entries(video).map(([key, value]) => {
+      return `\t\t"${key}": ${typeof value === 'string' ? '"' + value + '"' : value}`;
     }).join(',\n') + '\n\t},';
   });
-  resString = resString.slice(0, resString.length - 1);
-  resString = resString + '\n]'
-  console.log(resString);
+  res = res.slice(0, res.length - 1);
+  res = res + '\n]';
+
+  return res;
 }
 
-const testCase = [
+const csv = [
   "4668c219-296d-40de-a073-99b85026e977,01-01 Visão geral do capítulo.mp4,222",
   "81be4133-f81a-443a-96f3-0c30d7460ab8,01-02 Algoritmos e Lógica de Programação.mp4,396",
   "b82f4f7b-f8f1-43e2-974d-3821e6a59e45,01-03 Estruturas de dados é sobre o quê.mp4,567",
@@ -43,4 +44,6 @@ const testCase = [
   "32029cca-af8a-4b20-971a-08ccf350d2f4,02-09 Expressões regulares.mp4,486"
 ];
 
-csvToJson(testCase)
+const result = csvToJson(testCase);
+
+console.log(result);
